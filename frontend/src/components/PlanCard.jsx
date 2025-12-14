@@ -53,8 +53,8 @@ const PlanCard =({plan, refreshPlans}) =>{
 
       <div className="p-4 bg-gray-50 border-t">
         {isSubscribed ? (
-          <button disabled className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-lg cursor-default">
-            ✅ Subscribed
+          <button disabled className="w-full py-2 px-4 bg-green-900 text-white font-semibold rounded-lg cursor-default">
+            Subscribed
           </button>
         ) : isOwner ? (
           <button disabled className="w-full py-2 px-4 bg-gray-300 text-gray-600 font-semibold rounded-lg cursor-default">

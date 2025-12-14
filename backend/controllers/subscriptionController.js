@@ -15,6 +15,9 @@ const subscribe = async(req, res)=> {
         user.purchasedPlans.push(planId);
         await user.save();
 
+        plan.subscribers.push(userId);
+        await plan.save();
+        
         res.status(200).json({ 
             message: `Successfully subscribed to ${plan.title}`,
             planId: planId 
