@@ -1,6 +1,7 @@
 import{useContext} from 'react';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const PlanCard= ({plan, refreshPlans }) => {
   const {user}= useContext(AuthContext);
@@ -61,7 +62,12 @@ const PlanCard= ({plan, refreshPlans }) => {
         <div className="flex justify-between items-start">
           <div>
              <h3 className="text-xl font-bold text-gray-900">{plan.title}</h3>
-             <p className="text-sm text-gray-500 mt-1">by {plan.trainer?.name || 'Unknown'}</p>
+             <p className="text-sm text-gray-500 mt-1">
+                by 
+                <Link to={`/trainer/${plan.trainer._id}`} className="text-blue-600 hover:underline">
+                    {plan.trainer?.name || 'Unknown'}
+                </Link>
+             </p>
           </div>
           <span className="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
             ${plan.price}
@@ -77,8 +83,11 @@ const PlanCard= ({plan, refreshPlans }) => {
         </div>
       </div>
 
-      <div className="p-4 bg-gray-50 border-t">
+      <div className="p-4 bg-gray-50 border-t flex gap-2">
         {renderButton()}
+        <Link to={`/plans/${plan._id}`} className="flex-1 text-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-100">
+        Details
+    </Link>
       </div>
     </div>
   );
