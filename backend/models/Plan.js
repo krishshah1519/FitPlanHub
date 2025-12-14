@@ -1,21 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose= require('mongoose');
 
-const planSchema = mongoose.Schema({
+const planSchema =mongoose.Schema({
     title:{
-        type: String,
+        type : String ,
         required: true
     },
     description: {
-        type: String,
+        type:String ,
         required: true
     },
     price: {
-        type: Number,
-        required: true
-    },
+        type:Number,
+        required : true
+    } ,
     duration: {
         type: String,
-        required: true
+        required : true
     },
     trainer:{
         type: mongoose.Schema.Types.ObjectId,
@@ -26,6 +26,7 @@ const planSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-},{timeStamps: true});
+}
+,{timeStamps: true});
 
 module.exports = mongoose.model('Plan', planSchema);
