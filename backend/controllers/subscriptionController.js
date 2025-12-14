@@ -1,29 +1,39 @@
 const User = require('../models/User');
 const Plan = require('../models/Plan');
 
-const subscribe = async(req, res)=> {
-    try{
-        const planId = req.params.id;
-        const userId=req.user.id; 
-        const plan =await Plan.findById(planId);
-        if(!plan) return res.status(404).json({message:'Plan not found' });
+const subscribe = async (req, res) => {
+    try {
+        const { id: planId } = req.params;
+        const userId = req.user.id; 
 
-        const user = await User.findById(userId);
-        if (user.purchasedPlans.includes(planId)) {
-            return res.status(400).json({ message: 'You already subscribed to this plan' });
+        const [plan, user] = await Promise.all([
+            Plan.findById(planId),
+            User.findById(userId)
+        ]);
+
+        if (!plan) return res.status(404).json({ message: 'Plan not found' });
+
+        const alreadySubscribed = user.purchasedPlans.some(
+            (id) => id.toString() === planId
+        );
+
+        if (alreadySubscribed) {
+            return res.status(400).json({ message: 'Already subscribed' });
         }
         user.purchasedPlans.push(planId);
-        await user.save();
-
         plan.subscribers.push(userId);
-        await plan.save();
+
+        await Promise.all([user.save(), plan.save()]);
         
-        res.status(200).json({ 
-            message: `Successfully subscribed to ${plan.title}`,
-            planId: planId 
+        return res.status(200).json({ 
+            message: `Subscribed to ${plan.title}`,
+            planId 
         });
-    }catch (error) {
-        res.status(500).json({message: error.message });
+
+    } catch (err) {
+        console.error(err); 
+        res.status(500).json({ message: 'Server error during subscription' });
     }
 };
-module.exports ={subscribe};
+
+module.exports = { subscribe };
